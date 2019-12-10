@@ -1,5 +1,7 @@
 package com.timwang.warmup.core;
 
+import java.util.List;
+
 /**
  * @author wangjun
  * @date 2019-12-10
@@ -43,10 +45,18 @@ public class APractice1 {
      *     ListNode next;
      *     ListNode(int x) { val = x; }
      * }
+     *
+     *
+     *
      */
     class Solution {
+        /**
+         * 即删除当前的节点，把当前的节点指向下一个节点
+         * @param node ListNode
+         */
         public void deleteNode(ListNode node) {
-
+            node.val = node.next.val;
+            node.next = node.next.next;
         }
     }
 }
