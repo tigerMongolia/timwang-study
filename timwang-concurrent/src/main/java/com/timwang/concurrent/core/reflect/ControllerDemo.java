@@ -1,7 +1,5 @@
 package com.timwang.concurrent.core.reflect;
 
-import com.clinks.boot.web.controller.UserController;
-import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
