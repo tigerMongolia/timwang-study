@@ -1,3 +1,5 @@
+package com.timwang.concurrent.core.reflect;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -6,7 +8,7 @@ public class FieldDemo {
     public static void main(String[] args) throws Exception {
         Class stdClass = Student.class;
 
-        /**
+        /*
          *  Field getField(name)：根据字段名获取某个public的field（包括父类）
          */
 //        System.out.println(stdClass.getField("birth")); // private
@@ -14,7 +16,7 @@ public class FieldDemo {
 //        System.out.println(stdClass.getField("age"));
 //        System.out.println(stdClass.getField("name"));
 
-        /**
+        /*
          * Field getDeclaredField(name)：根据字段名获取当前类的某个field（不包括父类）
          */
 //        System.out.println(stdClass.getDeclaredField("birth"));
@@ -23,9 +25,9 @@ public class FieldDemo {
 //        System.out.println(stdClass.getDeclaredField("name"));
 
         System.out.println("-------------获取所有public的field（包括父类）---------------");
-        /**
+        /*
          * Field[] getFields()：获取所有public的field（包括父类）
-          */
+         */
 //        final Field[] fields = stdClass.getFields();
 //        for(Field f : fields) {
 //            System.out.println(f);
@@ -40,7 +42,7 @@ public class FieldDemo {
 //        }
 
         System.out.println("--------获取当前类的所有field（不包括父类）-----------");
-        /**
+        /*
          * Field[] getDeclaredFields()：获取当前类的所有field（不包括父类）
          */
 //        final Field[] declaredFields = stdClass.getDeclaredFields();
@@ -57,7 +59,7 @@ public class FieldDemo {
 //        }
 
 //        System.out.println("--------------获取某个属性具体值-----------------");
-        /**
+        /*
          * 获取某个属性具体值
          */
         final Person person = new Person(20, "测试");
@@ -79,7 +81,7 @@ public class FieldDemo {
 
 
 
-        /**
+        /*
          * 小结:
          *      Java的反射API提供的Field类封装了字段的所有信息：
          *

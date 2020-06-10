@@ -1,7 +1,9 @@
+package com.timwang.concurrent.core.reflect;
+
 import java.io.Closeable;
 
 /**
- * @author dongmei.tan
+ * @author tim.wang
  * @date 2020/5/31 9:45
  */
 public class SuperDemo {

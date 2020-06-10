@@ -1,7 +1,11 @@
+package com.timwang.concurrent.core.reflect;
+
 import java.lang.reflect.Constructor;
 
-/**
- * @author dongmei.tan
+import static java.lang.System.out;
+
+/*
+ * @author tim.wang
  * @date 2020/5/31 0:05
  */
 public class ConstructorDemo {
@@ -9,47 +13,47 @@ public class ConstructorDemo {
     public static void main(String[] args) throws Exception {
         final Class<Person> personClass = Person.class;
 
-        /**
+        /*
          * 调用Class提供的newInstance()方法：
          */
-//        final Person person = personClass.newInstance();
-//        System.out.println(person.toString());
+        final Person person = personClass.newInstance();
+        out.println(person.toString());
 
 
-        /**
+        /*
          * getConstructor(Class...)：获取某个public的Constructor；
-          */
-//        System.out.println("-----------获取某个public的Constructor-------------");
-//        final Constructor<Person> cons2 = personClass.getConstructor(null);
-//        final Object o2 = cons2.newInstance();
-//        System.out.println(o2);
+         */
+        out.println("-----------获取某个public的Constructor-------------");
+        final Constructor<Person> cons2 = personClass.getConstructor(null);
+        final Object o2 = cons2.newInstance();
+        out.println(o2);
 
-        /**
+        /*
          * getDeclaredConstructor(Class...)：获取某个Constructor；
-          */
-//        System.out.println("----------获取某个Constructor；------------");
-//        Constructor cons1 = personClass.getDeclaredConstructor(int.class, String.class);
-//        final Object o = cons1.newInstance(20, "测试");
-//        System.out.println(o);
+         */
+        out.println("----------获取某个Constructor；------------");
+        Constructor cons1 = personClass.getDeclaredConstructor(int.class, String.class);
+        final Object o = cons1.newInstance(20, "测试");
+        out.println(o);
 
-        /**
+        /*
          * getConstructors()：获取所有public的Constructor；
          */
-        System.out.println("----------获取所有public的Constructor；---------");
-        for(Constructor cons : personClass.getConstructors()) {
-            System.out.println(cons);
+        out.println("----------获取所有public的Constructor；---------");
+        for (Constructor cons : personClass.getConstructors()) {
+            out.println(cons);
         }
 
-        /**
+        /*
          * getDeclaredConstructors()：获取所有Constructor
          */
-        System.out.println("----------获取所有Constructor---------");
-        for(Constructor cons : personClass.getDeclaredConstructors()) {
-            System.out.println(cons);
+        out.println("----------获取所有Constructor---------");
+        for (Constructor cons : personClass.getDeclaredConstructors()) {
+            out.println(cons);
         }
 
 
-        /**
+        /*
          * 小结：
          *    Constructor对象封装了构造方法的所有信息；
          *

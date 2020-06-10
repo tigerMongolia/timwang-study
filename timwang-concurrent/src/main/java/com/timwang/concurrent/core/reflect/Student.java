@@ -1,5 +1,7 @@
+package com.timwang.concurrent.core.reflect;
+
 /**
- * @author dongmei.tan
+ * @author tim.wang
  * @date 2020/5/30 22:53
  */
 public class Student extends Person {
