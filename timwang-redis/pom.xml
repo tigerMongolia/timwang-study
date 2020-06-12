@@ -5,12 +5,15 @@
     <parent>
         <artifactId>timwang-parent</artifactId>
         <groupId>com.timwang</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../timwang-parent/pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>timwang-redis</artifactId>
+    <version>${revision}</version>
+    <packaging>war</packaging>
+
 
     <dependencies>
         <dependency>

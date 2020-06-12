@@ -7,12 +7,12 @@
     <parent>
         <groupId>com.timwang</groupId>
         <artifactId>timwang-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../timwang-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>timwang-algorithm</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>war</packaging>
 
     <dependencies>
