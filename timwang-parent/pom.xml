@@ -69,5 +69,6 @@
         <module>../timwang-redis</module>
         <module>../timwang-util</module>
         <module>../timwang-spring</module>
+        <module>../timwang-sourcecode</module>
     </modules>
 </project>

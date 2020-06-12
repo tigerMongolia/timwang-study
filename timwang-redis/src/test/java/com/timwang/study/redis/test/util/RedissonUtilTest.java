@@ -1,6 +1,6 @@
 package com.timwang.study.redis.test.util;
 
-import com.timwang.study.redisson.util.RedissonClientUtil;
+import com.timwang.redis.study.redisson.util.RedissonClientUtil;
 import org.junit.Test;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
