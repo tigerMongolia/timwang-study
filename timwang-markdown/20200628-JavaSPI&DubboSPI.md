@@ -168,3 +168,124 @@ static {
 
 #### 四、Dubbo SPI
 
+
+
+#### 五、ServiceLoader类分析
+
+ServiceLoader.class是一个工具类,根据META-INF/services/xxxInterfaceName下面的文件名,加载具体的实现类.
+
+从load(Search.class)进去,我们来扒一下这个类,下面主要是贴代码,分析都在代码注释内.
+
+1. 可以看到,里面并没有很多逻辑,主要逻辑都交给了LazyIterator这类
+
+```java
+ /*
+ *入口, 获取一下当前类的类加载器,然后调用下一个静态方法
+ */
+ public static <S> ServiceLoader<S> load(Class<S> service) {
+     ClassLoader cl = Thread.currentThread().getContextClassLoader();
+     return ServiceLoader.load(service, cl);
+ }
+ /*
+ *这个也没有什么逻辑,直接调用构造方法
+ */
+ public static <S> ServiceLoader<S> load(Class<S> service, ClassLoader loader)
+ {
+     return new ServiceLoader<>(service, loader);
+ }
+ /**
+ * 也没有什么逻辑,直接调用reload
+ */
+ private ServiceLoader(Class<S> svc, ClassLoader cl) {
+     service = Objects.requireNonNull(svc, "Service interface cannot be null");
+     loader = (cl == null) ? ClassLoader.getSystemClassLoader() : cl;
+     acc = (System.getSecurityManager() != null) ? AccessController.getContext() : null;
+     reload();
+ }
+ /**
+ * 直接实例化一个懒加载的迭代器
+ */
+ public void reload() {
+     providers.clear();
+     lookupIterator = new LazyIterator(service, loader);
+ }
+
+```
+
+2. LazyIterator这个迭代器只需要关心hasNext()和next(), hasNext()里面又只是单纯地调用hasNextService(). 不用说, next()里面肯定也只是单纯地调用了nextService();
+
+```java
+ private boolean hasNextService() {
+     if (nextName != null) {
+         // nextName不为空,说明加载过了,而且服务不为空 
+         return true;
+     }
+     // configs就是所有名字为PREFIX + service.getName()的资源
+     if (configs == null) {
+         try {
+             // PREFIX是 /META-INF/services
+             // service.getName() 是接口的全限定名称
+             String fullName = PREFIX + service.getName();
+             // loader == null, 说明是bootstrap类加载器
+             if (loader == null)
+                 configs = ClassLoader.getSystemResources(fullName);
+             else
+                 // 通过名字加载所有文件资源
+                 configs = loader.getResources(fullName);
+             } catch (IOException x) {
+                 fail(service, "Error locating configuration files", x);
+             }
+     }
+     //遍历所有的资源,pending用于存放加载到的实现类
+     while ((pending == null) || !pending.hasNext()) {
+             if (!configs.hasMoreElements()) {
+                 //遍历完所有的文件了,直接返回
+                 return false;
+             }
+             
+             // parse方法主要调用了parseLine,功能:
+             // 1. 分析每个PREFIX + service.getName() 目录下面的所有文件
+             // 2. 判断每个文件是否是合法的java类的全限定名称,如果是就add到pending变量中
+             pending = parse(service, configs.nextElement());
+     }
+     // 除了第一次进来,后面每次调用都是直接到这一步了
+     nextName = pending.next();
+     return true;
+ }
+
+```
+
+3. 再来看看nextService干了啥
+
+```java
+ private S nextService() {
+     // 校验一下
+     if (!hasNextService())
+             throw new NoSuchElementException();
+     String cn = nextName;
+     nextName = null;
+     Class<?> c = null;
+     try {
+         // 尝试一下是否能加载该类
+         c = Class.forName(cn, false, loader);
+     } catch (ClassNotFoundException x) {
+         fail(service,"Provider " + cn + " not found");
+     }
+     // 是不是service的子类,或者同一个类
+     if (!service.isAssignableFrom(c)) {
+         fail(service,"Provider " + cn  + " not a subtype");
+     }
+     try {
+         // 实例化这个类, 然后向上转一下
+         S p = service.cast(c.newInstance());
+         // 缓存起来,避免重复加载
+         providers.put(cn, p);
+         return p;
+     } catch (Throwable x) {
+         fail(service,"Provider " + cn + " could not be instantiated",x);
+     }
+     throw new Error();          // This cannot happen
+ }
+
+```
+
