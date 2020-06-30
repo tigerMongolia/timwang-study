@@ -32,3 +32,18 @@ MyBatis 是一款优秀的持久层框架，它支持自定义 SQL、存储过�
 @MapperScan(basePackages = "com.test.**.mapper")
 ```
 
+
+
+
+
+https://mybatis.org/mybatis-3/zh/getting-started.html
+
+http://lihuia.com/mybatis/
+
+http://lihuia.com/mybatis/
+
+https://juejin.im/post/5db3bce6e51d452a36791ef0#heading-0
+
+https://my.oschina.net/xiaolyuh/blog/3134267
+
+https://www1350.github.io/hexo/post/4df53b51.html
