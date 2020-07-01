@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UserService {
-//    @Autowired
-//    private UserMapper userMapper;
-//
-//    public void test() {
-//        userMapper.selectById(1);
-//    }
+    @Autowired
+    private UserMapper userMapper;
+
+    public void test() {
+        userMapper.selectById(1);
+    }
 }

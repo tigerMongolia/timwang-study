@@ -1,5 +1,6 @@
 package com.timwang.spring.mybatis.util;
 
+import com.sun.istack.internal.NotNull;
 import com.timwang.spring.mybatis.dao.UserMapper;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.stereotype.Component;
@@ -20,14 +21,14 @@ public class MybatisFactoryBean implements FactoryBean {
     public Object getObject() throws Exception {
         UserMapper userMapper = (UserMapper) Proxy.newProxyInstance(
             MybatisFactoryBean.class.getClassLoader(),
-            new Class[]{UserMapper.class}, new InvocationHandler() {
+            new Class[]{getObjectType()}, new InvocationHandler() {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 // 动态代理返回toString这些方法的默认
                 if (Object.class.equals(method.getDeclaringClass())) {
                     return method.invoke(this, args);
                 }
-                System.out.println("=====");
+                System.out.println(method.getName());
                 return null;
             }
         });
@@ -35,6 +36,7 @@ public class MybatisFactoryBean implements FactoryBean {
     }
 
     @Override
+    @NotNull
     public Class<?> getObjectType() {
         return UserMapper.class;
     }
