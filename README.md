@@ -3,17 +3,17 @@
 ### TODO
 
 1. 反射及常用使用场景
-√ 2. JVM内存模型介绍
-√ 3. JVM常用GC算法介绍
+2. JVM内存模型介绍 √ 
+3. JVM常用GC算法介绍 √ 
 4. 算法题刷刷刷
  
 ### 0. Java
 
-√ 1. Java类加载机制
-√ 2. .class文件解析
+1. Java类加载机制 √ 
+2. class文件解析 √ 
 3. Java并发编程(JUC、AQS)
-√ 4. 锁（sync，lock，可重入锁，乐观锁、lock优点、reagent lock、乐观锁）
-√ 5. hashmap、concurenthashmap，红黑树
+4. 锁（sync，lock，可重入锁，乐观锁、lock优点、reagent lock、乐观锁） √ 
+5. hashmap、concurenthashmap，红黑树 √ 
 6. io（NIO、BIO、AIO）
 7. lambda原理以及使用
 8. slf4j、logback日志
