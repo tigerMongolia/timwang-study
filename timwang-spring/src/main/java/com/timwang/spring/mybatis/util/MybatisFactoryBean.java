@@ -1,6 +1,5 @@
 package com.timwang.spring.mybatis.util;
 
-import com.sun.istack.internal.NotNull;
 import com.timwang.spring.mybatis.dao.UserMapper;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.stereotype.Component;
@@ -36,7 +35,6 @@ public class MybatisFactoryBean implements FactoryBean {
     }
 
     @Override
-    @NotNull
     public Class<?> getObjectType() {
         return UserMapper.class;
     }
