@@ -9,6 +9,10 @@ import java.util.Random;
  */
 public class RandomLoadBlance {
 
+    /**
+     * 简单的随机负载均衡算法
+     * @return ip
+     */
     public static String getIp() {
         List<String> ipList = ServerInfos.getIpList();
         int randomIndex = new Random().nextInt(ipList.size());
