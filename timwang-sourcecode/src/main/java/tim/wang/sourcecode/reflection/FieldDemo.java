@@ -1,7 +1,6 @@
-package com.timwang.concurrent.core.reflect;
+package tim.wang.sourcecode.reflection;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
 public class FieldDemo {
 

@@ -1,6 +1,4 @@
-package com.timwang.concurrent.core.reflect;
-
-import java.io.Closeable;
+package tim.wang.sourcecode.reflection;
 
 /**
  * @author tim.wang

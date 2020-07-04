@@ -1,4 +1,4 @@
-package tim.wang.sourcecode.reflection;
+package tim.wang.sourcecode.proxy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;

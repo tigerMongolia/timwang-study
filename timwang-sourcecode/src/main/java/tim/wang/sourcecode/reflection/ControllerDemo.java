@@ -1,10 +1,4 @@
-package com.timwang.concurrent.core.reflect;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
+package tim.wang.sourcecode.reflection;
 
 /**
  * @author tim.wang

@@ -1,4 +1,4 @@
-package tim.wang.sourcecode.reflection;
+package tim.wang.sourcecode.proxy;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
