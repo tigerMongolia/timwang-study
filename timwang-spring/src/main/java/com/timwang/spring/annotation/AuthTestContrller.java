@@ -1,4 +1,4 @@
-package com.timwang.other.annotation;
+package com.timwang.spring.annotation;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 

@@ -1,7 +1,4 @@
-package com.timwang.other.annotation;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+package com.timwang.spring.annotation;
 
 /**
  * @author wangjun

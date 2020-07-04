@@ -1,4 +1,4 @@
-package com.timwang.other.jvm;
+package tim.wang.sourcecode.jvm;
 
 import java.lang.ref.SoftReference;
 

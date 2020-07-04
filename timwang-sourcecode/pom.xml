@@ -20,6 +20,11 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.timwang</groupId>
+            <artifactId>timwang-util</artifactId>
+            <version>${revision}</version>
+        </dependency>
     </dependencies>
 
 </project>

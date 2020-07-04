@@ -1,4 +1,4 @@
-package com.timwang.other.annotation;
+package com.timwang.spring.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
