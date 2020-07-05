@@ -1,4 +1,4 @@
-package com.tim.wang.sourcecode.reflection;
+package com.tim.wang.sourcecode.reflection.model;
 
 import java.io.Serializable;
 

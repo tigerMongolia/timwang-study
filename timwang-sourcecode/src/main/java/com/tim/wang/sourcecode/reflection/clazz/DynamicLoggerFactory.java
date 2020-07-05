@@ -1,4 +1,4 @@
-package com.tim.wang.sourcecode.reflection;
+package com.tim.wang.sourcecode.reflection.clazz;
 
 import com.tim.wang.sourcecode.reflection.logger.Log4jFactory;
 import com.tim.wang.sourcecode.reflection.logger.LogJdkFactory;

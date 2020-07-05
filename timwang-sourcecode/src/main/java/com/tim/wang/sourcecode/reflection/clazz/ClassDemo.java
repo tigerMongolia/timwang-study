@@ -1,4 +1,4 @@
-package com.tim.wang.sourcecode.reflection;
+package com.tim.wang.sourcecode.reflection.clazz;
 
 import static java.lang.System.out;
 

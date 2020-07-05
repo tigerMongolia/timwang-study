@@ -1,4 +1,6 @@
-package com.tim.wang.sourcecode.reflection;
+package com.tim.wang.sourcecode.reflection.methods;
+
+import com.tim.wang.sourcecode.reflection.model.Student;
 
 import java.lang.reflect.Method;
 

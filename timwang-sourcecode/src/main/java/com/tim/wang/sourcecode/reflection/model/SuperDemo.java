@@ -1,4 +1,4 @@
-package com.tim.wang.sourcecode.reflection;
+package com.tim.wang.sourcecode.reflection.model;
 
 /**
  * @author tim.wang

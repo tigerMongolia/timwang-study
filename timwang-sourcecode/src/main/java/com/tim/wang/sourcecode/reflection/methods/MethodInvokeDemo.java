@@ -1,4 +1,4 @@
-package com.tim.wang.sourcecode.reflection;
+package com.tim.wang.sourcecode.reflection.methods;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

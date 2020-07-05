@@ -1,4 +1,7 @@
-package com.tim.wang.sourcecode.reflection;
+package com.tim.wang.sourcecode.reflection.field;
+
+import com.tim.wang.sourcecode.reflection.model.Person;
+import com.tim.wang.sourcecode.reflection.model.Student;
 
 import java.lang.reflect.Field;
 
