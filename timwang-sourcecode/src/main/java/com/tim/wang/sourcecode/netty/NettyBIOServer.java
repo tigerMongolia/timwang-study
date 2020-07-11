@@ -1,25 +1,47 @@
 package com.tim.wang.sourcecode.netty;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
-import	java.util.concurrent.ScheduledExecutorService;
-import	java.util.concurrent.Executors;
-import	java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  * @author wangjun
- * @date 2020-07-10
+ * @date 2020-07-11
  */
 public class NettyBIOServer {
-
-    public static void main(String[] args) {
-        ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(1,
-                new BasicThreadFactory.Builder().namingPattern("basicThreadFactory-").build());
-
-
+    public static void main(String[] args) throws Exception{
+        ServerSocket serverSocket = new ServerSocket(6666);
+        System.out.println("=== server started at port 6666 ===");
+        while (true) {
+            final Socket socket = serverSocket.accept();
+            System.out.println("=== server accept socket ===");
+            handlerSocker(socket);
+        }
 
     }
 
-
-
+    private static void handlerSocker(Socket socket) {
+        try {
+            InputStream inputStream = socket.getInputStream();
+            byte[] buffer = new byte[1024];
+            while (true) {
+                int read = inputStream.read(buffer);
+                if (read != -1) {
+                    System.out.println(new String(buffer, 0, read));
+                } else {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
