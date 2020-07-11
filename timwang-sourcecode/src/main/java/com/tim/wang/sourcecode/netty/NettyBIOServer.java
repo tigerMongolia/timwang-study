@@ -17,12 +17,12 @@ public class NettyBIOServer {
         while (true) {
             final Socket socket = serverSocket.accept();
             System.out.println("=== server accept socket ===");
-            handlerSocker(socket);
+            handlerSocket(socket);
         }
 
     }
 
-    private static void handlerSocker(Socket socket) {
+    public static void handlerSocket(Socket socket) {
         try {
             InputStream inputStream = socket.getInputStream();
             byte[] buffer = new byte[1024];

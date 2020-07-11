@@ -1,6 +1,7 @@
 package com.tim.wang.sourcecode.netty;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
+import java.net.ServerSocket;
 import java.net.Socket;
 import	java.util.concurrent.ScheduledExecutorService;
 import	java.util.concurrent.Executors;
@@ -17,7 +18,13 @@ public class NettyThreadBIOServer {
         ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("basicThreadFactory-").build());
 
-
+        ServerSocket serverSocket = new ServerSocket(6666);
+        System.out.println("server started on port 6666");
+        while (true) {
+            Socket accept = serverSocket.accept();
+            System.out.println("socket connected on server");
+            NettyBIOServer.handlerSocket(accept);
+        }
     }
 
 
