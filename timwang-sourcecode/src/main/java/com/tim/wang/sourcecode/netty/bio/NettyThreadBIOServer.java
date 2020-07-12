@@ -1,11 +1,9 @@
-package com.tim.wang.sourcecode.netty;
+package com.tim.wang.sourcecode.netty.bio;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 import	java.util.concurrent.ScheduledExecutorService;
-import	java.util.concurrent.Executors;
-import	java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 

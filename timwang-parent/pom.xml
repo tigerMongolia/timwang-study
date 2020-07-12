@@ -61,6 +61,9 @@
         <guava.version>19.0</guava.version>
         <hutool.util.version>5.3.7</hutool.util.version>
         <commons-lang3.version>3.9</commons-lang3.version>
+        <spring-boot-dependencies.version>2.2.7.RELEASE</spring-boot-dependencies.version>
+        <org.springframework.version>4.3.16.RELEASE</org.springframework.version>
+        <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
     </properties>
 
     <packaging>pom</packaging>

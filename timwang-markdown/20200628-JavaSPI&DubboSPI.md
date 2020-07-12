@@ -262,13 +262,94 @@ public final class SpringFactoriesLoader {
 }
 ```
 
+#### 四、Spring-Boot-Starter
 
+SpringBoot的 **@SpringBootApplication** 注解，里面还有一个 **@EnableAutoConfiguration** 注解，开启自动配置的。
 
-#### 四、Dubbo SPI
+可以发现这个自动配置注解在另一个工程，而这个工程里也有个**spring.factories**文件，如下图：
 
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggo0tmvup6j30d80c3q3j.jpg" alt="image-20200205095809050" style="zoom:80%;float:left" />
 
+我们知道在SpringBoot的目录下有个spring.factories文件，里面都是一些接口的具体实现类，可以由SpringFactoriesLoader加载。
 
-#### 五、ServiceLoader类分析
+那么同样的道理，spring-boot-autoconfigure模块也能动态加载了。看一下其中的内容：
+
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggo1gm8smej30le0gyq4p.jpg" alt="image-20200205095809050" style="zoom:80%;float:left" />
+
+为了证明这一点，我们看一下 **dubbo-spring-boot-starter** 的结构
+
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggo1gm8smej30le0gyq4p.jpg" alt="image-20200205095809050" style="zoom:80%;float:left" />
+
+它的关键在于引入了一个 autoconfigure 依赖。这个里面配置了Spring的 **spring.factories** **其中只有一个配置**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.demo</groupId>
+    <artifactId>custom-spring-boot-autoconfigure</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>2.1.6.RELEASE</version>
+        </dependency>
+    </dependencies>
+
+</project>
+```
+
+```java
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ConditionalOnClass(name = "org.springframework.web.servlet.DispatcherServlet")
+public class CustomAutoConfiguration {
+
+    @Bean
+    public CustomConfig customConfig(){
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!第三方自定义的配置");
+        return new CustomConfig();
+    }
+}
+```
+
+```java
+/**
+ * 自定义配置
+ */
+public class CustomConfig {
+
+    private String value = "Default";
+}
+```
+
+**spring.factories**
+
+```properties
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.demo.CustomAutoConfiguration
+```
+
+#### 五、Dubbo SPI
+
+我们首先通过 ExtensionLoader 的 getExtensionLoader 方法获取一个 ExtensionLoader 实例，然后再通过 ExtensionLoader 的 getExtension 方法获取拓展类对象。这其中，getExtensionLoader 方法用于从缓存中获取与拓展类对应的 ExtensionLoader，若缓存未命中，则创建一个新的实例。该方法的逻辑比较简单，本章就不进行分析了。下面我们从 ExtensionLoader 的 getExtension 方法作为入口，对拓展类对象的获取过程进行详细的分析。
+
+- 对Dubbo进行扩展，不需要改动Dubbo的源码
+- 自定义的Dubbo的扩展点实现，是一个普通的Java类，Dubbo没有引入任何Dubbo特有的元素，对代码侵入性几乎为零。
+- 将扩展注册到Dubbo中，只需要在ClassPath中添加配置文件。使用简单。而且不会对现有代码造成影响。符合开闭原则。
+- dubbo的扩展机制设计默认值：@SPI("dubbo") 代表默认的spi对象
+- Dubbo的扩展机制支持IoC,AoP等高级功能
+- Dubbo的扩展机制能很好的支持第三方IoC容器，默认支持Spring Bean，可自己扩展来支持其他容器，比如Google的Guice。
+- 切换扩展点的实现，只需要在配置文件中修改具体的实现，不需要改代码。使用方便。
+
+#### 六、ServiceLoader类分析
 
 ServiceLoader.class是一个工具类,根据META-INF/services/xxxInterfaceName下面的文件名,加载具体的实现类.
 
@@ -392,3 +473,11 @@ https://cloud.tencent.com/developer/article/1497777
 https://juejin.im/post/5d9998d5f265da5bab5bc0f2#heading-5
 
 https://www.cnblogs.com/itplay/p/9927892.html
+
+https://www.cnblogs.com/LUA123/p/12460869.html
+
+https://dubbo.apache.org/zh-cn/docs/source_code_guide/dubbo-spi.html
+
+https://www.cnblogs.com/GrimMjx/p/10970643.html
+
+https://my.oschina.net/j4love/blog/1813040
