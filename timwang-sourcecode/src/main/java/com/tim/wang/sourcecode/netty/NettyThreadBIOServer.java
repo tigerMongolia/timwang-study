@@ -25,10 +25,7 @@ public class NettyThreadBIOServer {
         while (true) {
             Socket accept = serverSocket.accept();
             System.out.println("socket connected on server");
-            NettyBIOServer.handlerSocket(accept);
+            executor.execute(() -> NettyBIOServer.handlerSocket(accept));
         }
     }
-
-
-
 }

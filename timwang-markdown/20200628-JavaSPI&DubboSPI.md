@@ -162,7 +162,105 @@ static {
 
 遍历使用SPI获取到的具体实现，实例化各个实现类。在遍历的时候，首先调用`driversIterator.hasNext()`方法，这里会搜索classpath下以及jar包中所有的META-INF/services目录下的java.sql.Driver文件，并找到文件中的实现类的名字，此时并没有实例化具体的实现类。
 
+##### 2.7 SPI解决的问题场景描述
+
+在我们设计一套API供别人调用的时候，如果**同一个功能**的要求特别多，或者同一个接口要面对很复杂的业务场景，这个时候我们该怎么办呢？
+
+- 其一：我们可以规范不同的系统调用，也就是传递一个系统标识；
+- 其二：我们在内部编码的时候可以使用不同的条件判断语句进行处理；
+- 其三：我们可以写几个策略类来来应对这个复杂的业务逻辑，比如同一个功能的实现，A实现类与B实现类的逻辑一点也不一样，但是目标是一样的，这个时候使用策略类是毋庸置疑的？
+
 #### 三、Spring SPI
+
+Spring中使用的类是SpringFactoriesLoader，在org.springframework.core.io.support包中
+
+1. SpringFactoriesLoader 会扫描 classpath 中的 META-INF/spring.factories文件。
+2. SpringFactoriesLoader 会加载并实例化 META-INF/spring.factories 中的制定类型
+3. META-INF/spring.factories 内容必须是 properties 的Key-Value形式，多值以逗号隔开。
+
+##### 3.1 使用
+
+和 SPI 不同，由于 SpringFactoriesLoader 中的配置文件格式是 `properties` 文件，因此，不需要要像 SPI 中那样为每个服务都创建一个文件， 而是选择直接把所有服务都扔到 `META-INF/spring.factories` 文件中。
+
+```xml
+com.fsx.serviceloader.IService=com.fsx.serviceloader.HDFSService,com.fsx.serviceloader.LocalService
+
+// 若有非常多个需要换行 可以这么写
+// 前面是否顶头没关系（Spring在4.x版本修复了这个bug）
+com.fsx.serviceloader.IService=\
+    com.fsx.serviceloader.HDFSService,\
+    com.fsx.serviceloader.LocalService
+```
+
+```java
+ public static void main(String[] args) throws IOException {
+        List<IService> services = SpringFactoriesLoader.loadFactories(IService.class, Main.class.getClassLoader());
+        List<String> list = SpringFactoriesLoader.loadFactoryNames(IService.class, Main.class.getClassLoader());
+        System.out.println(list); //[com.fsx.serviceloader.HDFSService, com.fsx.serviceloader.LocalService]
+        System.out.println(services); //[com.fsx.serviceloader.HDFSService@794cb805, com.fsx.serviceloader.LocalService@4b5a5ed1]
+    }
+```
+
+使用细节：
+
+- `spring.factories`内容的key**不只能是接口**，也可以是抽象类、具体的类。但是有个原则：`=`后面必须是key的实现类（子类）
+- key还可以是注解，比如`SpringBoot`中的的key：`org.springframework.boot.autoconfigure.EnableAutoConfiguration`，它就是一个注解
+- 文件的格式需要保证正确，否则会返回`[]`（不会报错）
+- `=`右边必须不是抽象类，必须能够实例化。且有空的构造函数~
+- `loadFactories`依赖方法`loadFactoryNames`。`loadFactoryNames`方法只拿全类名，`loadFactories`拿到全类名后会立马实例化
+- **此处特别注意**：**`loadFactories`实例化完成所有实例后，会调用`AnnotationAwareOrderComparator.sort(result)`排序，所以它是支持`Ordered`接口排序的，这个特点特别的重要。**
+
+##### 3.2 原理剖析
+
+因为Spring的这个配置文件和上面的不一样，它的名字是固定的`spring.factories`，里面的内容是key-value形式，因此一个文件里可以定义N多个键值对。**我认为它比源生JDK的SPI是更加灵活些的~**
+
+它主要暴露了两个方法：`loadFactories`和`loadFactoryNames`
+
+```java
+// @since 3.2
+public final class SpringFactoriesLoader {
+	...
+	public static final String FACTORIES_RESOURCE_LOCATION = "META-INF/spring.factories";
+	...
+	// 核心方法如下：
+	private static Map<String, List<String>> loadSpringFactories(@Nullable ClassLoader classLoader) {
+		MultiValueMap<String, String> result = cache.get(classLoader);
+		if (result != null) {
+			return result;
+		}
+
+		try {
+			// 读取到资源文件，遍历
+			Enumeration<URL> urls = (classLoader != null ? classLoader.getResources(FACTORIES_RESOURCE_LOCATION) : ClassLoader.getSystemResources(FACTORIES_RESOURCE_LOCATION));
+			result = new LinkedMultiValueMap<>();
+
+			
+			while (urls.hasMoreElements()) {
+				URL url = urls.nextElement();
+				// 此处使用的是URLResource把这个资源读进来~~~
+				UrlResource resource = new UrlResource(url);
+				
+				// 可以看到，最终它使用的还是PropertiesLoaderUtils，只能使键值对的形式哦~~~ 当然xml也是被支持的
+				
+				Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+				for (Map.Entry<?, ?> entry : properties.entrySet()) {
+					String factoryClassName = ((String) entry.getKey()).trim();
+		
+					// 使用逗号,分隔成数组，遍历   名称就出来了~~~
+					for (String factoryName : StringUtils.commaDelimitedListToStringArray((String) entry.getValue())) {
+						result.add(factoryClassName, factoryName.trim());
+					}
+				}
+			}
+			cache.put(classLoader, result);
+			return result;
+		} catch (IOException ex) {
+			throw new IllegalArgumentException("Unable to load factories from location [" +
+					FACTORIES_RESOURCE_LOCATION + "]", ex);
+		}
+	}
+}
+```
 
 
 
@@ -289,3 +387,8 @@ ServiceLoader.class是一个工具类,根据META-INF/services/xxxInterfaceName�
 
 ```
 
+https://cloud.tencent.com/developer/article/1497777
+
+https://juejin.im/post/5d9998d5f265da5bab5bc0f2#heading-5
+
+https://www.cnblogs.com/itplay/p/9927892.html
