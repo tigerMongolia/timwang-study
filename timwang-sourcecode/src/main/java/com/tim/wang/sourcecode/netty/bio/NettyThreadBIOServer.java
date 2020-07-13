@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * @author wangjun
  * @date 2020-07-10
  */
-public class NettyThreadBIOServer {
+public class   NettyThreadBIOServer {
 
     public static void main(String[] args) throws Exception {
         ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(1,
