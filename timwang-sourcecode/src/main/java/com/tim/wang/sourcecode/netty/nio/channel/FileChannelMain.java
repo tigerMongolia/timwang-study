@@ -9,7 +9,7 @@ import java.io.OutputStream;
  * @author wangjun
  * @date 2020-07-13
  */
-public class ChannelMain {
+public class FileChannelMain {
 
     public static void main(String[] args) throws Exception {
         String str = "this is channel main hello world";
