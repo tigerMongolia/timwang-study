@@ -1,4 +1,4 @@
-package com.tim.wang.sourcecode.netty.nio;
+package com.tim.wang.sourcecode.netty.nio.channel;
 import java.nio.ByteBuffer;
 import	java.nio.channels.FileChannel;
 

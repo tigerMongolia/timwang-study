@@ -1,4 +1,4 @@
-package com.tim.wang.sourcecode.netty.nio;
+package com.tim.wang.sourcecode.netty.nio.buffer;
 
 import java.nio.Buffer;
 import java.nio.IntBuffer;
@@ -23,6 +23,7 @@ public class BufferMain {
             System.out.println(buffer.get());
         }
         displayBuffer(buffer.rewind());
+        displayBuffer(buffer.clear());
     }
 
     private static void displayBuffer(Buffer buffer) {
