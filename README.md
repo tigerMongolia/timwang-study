@@ -15,7 +15,7 @@
 4. 锁（sync，lock，可重入锁，乐观锁、lock优点、reagent lock、乐观锁） √ 
 5. hashmap、concurenthashmap，红黑树 √ 
 6. io（NIO、BIO、AIO）√
-7. lambda原理以及使用
+7. lambda原理以及使用 √
 8. slf4j、logback日志
 9. java基本（接口和抽象类、多继承多实现、java为什么抛弃多继承、lambda、无符号右移）
 10. 元空间 方法区为什么用元空间
