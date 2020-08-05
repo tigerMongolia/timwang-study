@@ -23,8 +23,8 @@ public class NotReentrantLock {
         NotReentrantLock lock = new NotReentrantLock();
         private void print() throws Exception {
             lock.lock();
-            lock.unlock();
             doAdd();
+            lock.unlock();
         }
 
         public void doAdd() throws Exception {

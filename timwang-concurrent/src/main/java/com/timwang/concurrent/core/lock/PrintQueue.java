@@ -14,24 +14,32 @@ public class PrintQueue {
         queueLock.lock();
         try {
             Long duration = (long) (Math.random() * 1000);
-            System.out.printf("%s: PrintQueue: Printing a Job during %d seconds\n",
-                    Thread.currentThread().getName(), (duration / 1000));
+            System.out.printf("----线程 #%s: 打印第一段信息中: 打印时间为 %d 毫秒\n",
+                    Thread.currentThread().getName(), (duration));
             Thread.sleep(duration);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            System.out.println("----线程 #"+Thread.currentThread().getName()+": 解锁");
             queueLock.unlock();
+        }
+
+        try {
+            Thread.sleep(60);
+        } catch (Exception e) {
+
         }
 
         queueLock.lock();
         try {
             Long duration = (long) (Math.random() * 1000);
-            System.out.printf("%s: PrintQueue: Printing a Job during %d seconds\n",
-                    Thread.currentThread().getName(), (duration / 1000));
+            System.out.printf("====线程 #%s: 打印第二段信息中: 打印时间为 %d 毫秒\n",
+                    Thread.currentThread().getName(), (duration));
             Thread.sleep(duration);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
+            System.out.println("----线程 #"+Thread.currentThread().getName()+":第二段 解锁");
             queueLock.unlock();
         }
     }

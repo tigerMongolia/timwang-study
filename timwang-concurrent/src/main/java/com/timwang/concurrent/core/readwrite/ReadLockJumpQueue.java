@@ -7,8 +7,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @date 2020-06-26
  */
 public class ReadLockJumpQueue {
+    // // countdownlacth 判断时间长短
 
-    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock();
+    private static final ReentrantReadWriteLock reentrantReadWriteLock = new ReentrantReadWriteLock(false);
     private static final ReentrantReadWriteLock.ReadLock readLock = reentrantReadWriteLock
             .readLock();
     private static final ReentrantReadWriteLock.WriteLock writeLock = reentrantReadWriteLock

@@ -13,9 +13,9 @@ public class Job implements Runnable {
 
     @Override
     public void run() {
-        System.out.printf("%s: Going to print a job\n", Thread.currentThread().getName());
+        System.out.printf("线程 #%s: 将要进入打印job \n", Thread.currentThread().getName());
         printQueue.printJob(new Object());
-        System.out.printf("%s: The document has been printed\n", Thread.currentThread().getName());
+        System.out.printf("线程 #%s: 打印job已结束\n", Thread.currentThread().getName());
     }
 
 }
