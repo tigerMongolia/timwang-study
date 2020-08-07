@@ -3,6 +3,8 @@ package com.tim.wang.sourcecode.netty.discard;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
+import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +32,15 @@ public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         // 默默丢弃到收到的数据
-        ((ByteBuf) msg).release();
+        ByteBuf buf = ((ByteBuf) msg);
+        System.out.println(buf.toString(CharsetUtil.UTF_8));
+//        try {
+//            while (buf.isReadable()) {
+//                System.out.println((char) buf.readByte());
+//            }
+//        } finally {
+//            ReferenceCountUtil.release(msg);
+//        }
     }
 
     /**
