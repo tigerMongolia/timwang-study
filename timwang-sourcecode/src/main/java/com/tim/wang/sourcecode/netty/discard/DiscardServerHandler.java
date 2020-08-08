@@ -31,9 +31,12 @@ public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        // 默默丢弃到收到的数据
+        ByteBuf in = (ByteBuf) msg;
         try {
-            ByteBuf buf = ((ByteBuf) msg);
+            while (in.isReadable()) {
+                System.out.print((char) in.readByte());
+                System.out.flush();
+            }
         } finally {
             ReferenceCountUtil.release(msg);
         }
