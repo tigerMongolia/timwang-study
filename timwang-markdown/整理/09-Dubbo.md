@@ -75,6 +75,11 @@ ConsistentHash LoadBalance **一致性 Hash**
 
 #### 13. Dubbo 参数透传
 
+如果需要查看一次调用的全链路日志，则一般的做法是通过在系统边界中产生一个 **`traceId`**，向调用链的后续服务传递 **`traceId`**，后续服务继续使用 **`traceId`** 打印日志，并再向其他后续服务传递 **`traceId`**，此过程简称，**traceId透传**。
+
+1. 基于RpcContext实现
+2. 基于Filter实现
+
 #### 14. Dubbo Filter
 
 #### 15. **Dubbo的集群容错方案有哪些？**
