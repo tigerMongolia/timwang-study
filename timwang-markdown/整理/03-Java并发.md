@@ -1,4 +1,4 @@
-#### 一、ThreadPoolExecutor
+#### 1. ThreadPoolExecutor
 
 ##### 1.1 线程池创建参数
 
@@ -20,7 +20,19 @@ handler：       线程池对拒绝任务的处理策略
 - ThreadPoolExecutor.DiscardOldestPolicy():   抛弃旧的任务
 - ThreadPoolExecutor.DiscardPolicy():   抛弃当前的任务
 
-#### 二、什么是悲观锁和乐观锁
+#### 2. 什么是悲观锁和乐观锁
 
-#### 三、可重入锁和读写锁的区别，哪个效率更高，高并发的场景用哪个更好
+#### 3. 可重入锁和读写锁的区别，哪个效率更高，高并发的场景用哪个更好
+
+#### 4. 在 Java 中 Executor 和 Executors 的区别？
+
+#### 5. 并发编程三要素？
+
+#### 6. 什么是线程组，为什么在 Java 中不推荐使用？
+
+#### 7. 在 java 中守护线程和本地线程区别？
+
+#### 8. 什么是多线程中的上下文切换？
+
+#### 9. Java 中用到的线程调度算法是什么？
 
