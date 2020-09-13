@@ -159,3 +159,28 @@ IOC：控制反转：将对象的创建权，由Spring管理. DI（依赖注入�
 5. DispatcherServlet将ModelAndView传给ViewReslover解析生成View返回给DispatcherServlet；
 6. DispatcherServlet根据View进行渲染视图；
    ->DispatcherServlet->HandlerMapping->Handler ->DispatcherServlet->HandlerAdapter处理handler->ModelAndView ->DispatcherServlet->ModelAndView->ViewReslover->View ->DispatcherServlet->返回给客户
+
+#### SpringBoot启动流程
+
+- new springApplication对象，利用spi机制加载applicationContextInitializer， applicationLister接口实例（META-INF/spring.factories）；
+- 调run方法准备Environment，加载应用上下文（applicationContext），发布事件 很多通过lister实现
+- 创建spring容器， refreshContext（） ，实现starter自动化配置，spring.factories文件加载， bean实例化
+
+#### SpringBoot自动配置的原理
+
+- @EnableAutoConfiguration找到META-INF/spring.factories（需要创建的bean在里面）配置文件
+- 读取每个starter中的spring.factories文件
+
+#### Spring Boot 的核心注解
+
+核心注解是@SpringBootApplication 由以下三种组成
+
+- @SpringBootConfiguration：组合了 @Configuration 注解，实现配置文件的功能。
+- @EnableAutoConfiguration：打开自动配置的功能。
+- @ComponentScan：Spring组件扫描。
+
+#### Spring Boot 的核心配置文件
+
+1. Application.yml 一般用来定义单个应用级别的，如果搭配 spring-cloud-config 使用
+
+2. Bootstrap.yml（先加载） 系统级别的一些参数配置，这些参数一般是不变的
