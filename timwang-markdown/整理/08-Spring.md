@@ -88,6 +88,8 @@ https://zhuanlan.zhihu.com/p/54067384
 
 https://www.cnblogs.com/leeSmall/p/10306672.html
 
+https://developer.ibm.com/zh/technologies/java/articles/j-master-spring-transactional-use/
+
 #### Spring框架的七大模块
 
 - Spring Core：框架的最基础部分，提供 IoC 容器，对 bean 进行管理。
