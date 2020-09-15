@@ -136,6 +136,36 @@ MVCC是为了实现数据库的并发控制而设计的一种协议。并发访�
 
 ##### mysql explain有哪些字段，分别代表什么含义，如何判断是否走索引
 
+type：联接类型。下面给出各种联接类型,按照从最佳类型到最坏类型进行排序
+
+- system：表仅有一行(=系统表)。这是const联接类型的一个特例。
+- const：表最多有一个匹配行,它将在查询开始时被读取。因为仅有一行,在这行的列值可被优化器剩余部分认为是常数。const表很快,因为它们只读取一次!
+- eq_ref：对于每个来自于前面的表的行组合,从该表中读取一行。这可能是最好的联接类型,除了const类型。
+- ref：对于每个来自于前面的表的行组合,所有有匹配索引值的行将从这张表中读取。
+- ref_or_null：该联接类型如同ref,但是添加了MySQL可以专门搜索包含NULL值的行。
+- index_merge：该联接类型表示使用了索引合并优化方法。
+- unique_subquery：该类型替换了下面形式的IN子查询的ref: value IN (SELECT primary_key FROM single_table WHERE some_expr) unique_subquery是一个索引查找函数,可以完全替换子查询,效率更高。
+- index_subquery：该联接类型类似于unique_subquery。可以替换IN子查询,但只适合下列形式的子查询中的非唯一索引: value IN (SELECT key_column FROM single_table WHERE some_expr)
+- range：只检索给定范围的行,使用一个索引来选择行。
+- index：该联接类型与ALL相同,除了只有索引树被扫描。这通常比ALL快,因为索引文件通常比数据文件小。
+- ALL：对于每个来自于先前的表的行组合,进行完整的表扫描。
+
+possible_keys：指出MySQL能使用哪个索引在表中找到记录，查询涉及到的字段上若存在索引，则该索引将被列出，但不一定被查询使用
+
+rows：它执行查询时必须检查的行数。多行之间的数据相乘可以估算要处理的行数
+
+Extra：该列包含MySQL解决查询的详细信息
+
+- Distinct：MySQL发现第1个匹配行后,停止为当前的行组合搜索更多的行。
+- Not exists：MySQL能够对查询进行LEFT JOIN优化,发现1个匹配LEFT JOIN标准的行后,不再为前面的的行组合在该表内检查更多的行。
+  range checked for each record (index map: #):MySQL没有发现好的可以使用的索引,但发现如果来自前面的表的列值已知,可能部分索引可以使用。
+- Using filesort：MySQL需要额外的一次传递,以找出如何按排序顺序检索行。
+- Using index：从只使用索引树中的信息而不需要进一步搜索读取实际的行来检索表中的列信息。
+- Using temporary：为了解决查询,MySQL需要创建一个临时表来容纳结果。
+- Using where:WHERE 子句用于限制哪一个行匹配下一个表或发送到客户。
+- Using sort_union(…), Using union(…), Using intersect(…):这些函数说明如何为index_merge联接类型合并索引扫描。
+- Using index for group-by：类似于访问表的Using index方式,Using index for group-by表示MySQL发现了一个索引,可以用来查 询GROUP BY或DISTINCT查询的所有列,而不要额外搜索硬盘访问实际的表。
+
 ##### 说下主键索引和非主键索引在查询时候的区别
 
 主键索引和非主键索引的区别是：非主键索引的叶子节点存放的是**主键的值**，而主键索引的叶子节点存放的是**整行数据**，其中非主键索引也被称为**二级索引**，而主键索引也被称为**聚簇索引**。
@@ -145,6 +175,20 @@ MVCC是为了实现数据库的并发控制而设计的一种协议。并发访�
 2. 如果查询语句是 select * from table where k = 1，即非主键的查询方式，则先搜索k索引树，得到ID=100,再到ID索引树搜索一次，这个过程也被称为回表。
 
 ##### 索引的非叶子结点存的是什么信息
+
+非叶子结点是一页数据，16kb，
+
+定义任意非叶子结点最多只有M个儿子，且M>2；
+
+根结点的儿子数为[2, M]；
+
+除根结点以外的非叶子结点的儿子数为[M/2, M]；
+
+非叶子结点的关键字个数=指向儿子的指针个数-1；
+
+非叶子结点的关键字：K[1], K[2], …, K[M-1]；且K[i] < K[i+1]；
+
+非叶子结点的指针：P[1], P[2], …, P[M]；其中P[1]指向关键字小于K[1]的子树，P[M]指向关键字大于K[M-1]的子树，其它P[i]指向关键字属于(K[i-1], K[i])的子树；
 
 ##### MySQL 数据库锁
 
