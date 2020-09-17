@@ -111,5 +111,23 @@ Java内存模型(Java Memory Model，JMM)是java虚拟机规范定义的，工�
 -XX：+HeapDumpOnOutOfMemoryError或jmap -dumpLformat=b，file=xxx pid 转出文件进行分析 
 （arthas没有实现jmap命令）heapdump --live /xxx/xx.hprof导出文件
 
-##### 11. 遇到死循环 CPU 飙升怎么解决
+##### 遇到死循环 CPU 飙升怎么解决
+
+##### 栈的执行过程
+
+1. 局部变量表
+
+   存放一些局部变量，例如a=1，b=2
+
+1. 操作数栈
+
+   一些变量之前的求和等操作
+
+2. 动态链接
+
+   对应的链接
+
+3. 方法出口
+
+![](https://tva1.sinaimg.cn/large/007S8ZIlgy1giu14f9941j31so0sagqp.jpg)
 
