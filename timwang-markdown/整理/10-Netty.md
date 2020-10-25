@@ -1,4 +1,4 @@
-#### Netty模型
+# Netty模型
 
 1. Netty抽象出两组线程池 BossGroup 专门负责接收客户端的连接, WorkerGroup 专门负责网络的读写
 2. BossGroup 和 WorkerGroup 类型都是 NioEventLoopGroup
